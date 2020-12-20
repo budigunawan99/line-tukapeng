@@ -125,8 +125,8 @@ class Webhook extends Controller
                         $profile = $res->getJSONDecodedBody();
 
                         // create welcome message
-                        $message  = "Salam kenal, " . $profile['displayName'] . "!\n";
-                        $message .= "Silakan kirim pesan \"MULAI\" untuk memulai kuis Tebak Kode.";
+                        $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
+                        $message .= "Kami akan membantumu menghitung nilai mata uang asing ke dalam rupiah.\nSilahkan ketik \"tukapeng\" untuk mulai!";
                         $textMessageBuilder = new TextMessageBuilder($message);
 
                         // create sticker message
@@ -146,12 +146,17 @@ class Webhook extends Controller
                               $profile['displayName']
                         );
                   }
-            }elseif(isset($event['source']['groupId'])){
-                  $res = $this->bot->getGroupMemberIds($event['source']['groupId']);
+            } elseif (isset($event['source']['groupId'])) {
+                  $res = $this->bot->getProfile($event['source']['userId']);
                   if ($res->isSucceeded()) {
                         $profile = $res->getJSONDecodedBody();
-                        $this->logger->debug('GroupProfile', $profile);
-                        
+
+                        // create welcome message
+                        $message  = "Hai, " . $profile['displayName'] . "!\n";
+                        $message .= "Tambahkan aku menjadi temanmu untuk bisa menggunakan fitur chatbot!";
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        // send reply message
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
             }
       }
