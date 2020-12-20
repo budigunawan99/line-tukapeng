@@ -88,7 +88,7 @@ class Webhook extends Controller
             if (is_array($data['events'])) {
                   foreach ($data['events'] as $event) {
                         // skip group and room event
-                        // if (!isset($event['source']['userId'])) continue;
+                        if (!isset($event['source']['userId'])) continue;
 
                         // get user data from database
                         $this->user = $this->userGateway->getUser($event['source']['userId']);
@@ -118,46 +118,31 @@ class Webhook extends Controller
 
       private function followCallback($event)
       {
+            $res = $this->bot->getProfile($event['source']['userId']);
+            if ($res->isSucceeded()) {
+                  $profile = $res->getJSONDecodedBody();
 
-            if (isset($event['source']['userId'])) {
-                  $res = $this->bot->getProfile($event['source']['userId']);
-                  if ($res->isSucceeded()) {
-                        $profile = $res->getJSONDecodedBody();
+                  // create welcome message
+                  $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
+                  $message .= "Kami akan membantumu menghitung kurs mata uang asing ke dalam rupiah.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
+                  $textMessageBuilder = new TextMessageBuilder($message);
 
-                        // create welcome message
-                        $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
-                        $message .= "Kami akan membantumu menghitung nilai mata uang asing ke dalam rupiah.\nSilahkan ketik \"tukapeng\" untuk mulai!";
-                        $textMessageBuilder = new TextMessageBuilder($message);
+                  // create sticker message
+                  $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
-                        // create sticker message
-                        $stickerMessageBuilder = new StickerMessageBuilder(1, 3);
+                  // merge all message
+                  $multiMessageBuilder = new MultiMessageBuilder();
+                  $multiMessageBuilder->add($textMessageBuilder);
+                  $multiMessageBuilder->add($stickerMessageBuilder);
 
-                        // merge all message
-                        $multiMessageBuilder = new MultiMessageBuilder();
-                        $multiMessageBuilder->add($textMessageBuilder);
-                        $multiMessageBuilder->add($stickerMessageBuilder);
+                  // send reply message
+                  $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
-                        // send reply message
-                        $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
-
-                        // save user data
-                        // $this->userGateway->saveUser(
-                        //       $profile['userId'],
-                        //       $profile['displayName']
-                        // );
-                  }
-            } elseif (isset($event['source']['groupId'])) {
-                  $res = $this->bot->getProfile($event['source']['userId']);
-                  if ($res->isSucceeded()) {
-                        $profile = $res->getJSONDecodedBody();
-                        $this->logger->debug('profil', $profile);
-                        // create welcome message
-                        $message  = "Hai, " . $profile['displayName'] . "!\n";
-                        $message .= "Tambahkan aku menjadi temanmu untuk bisa menggunakan fitur chatbot!";
-                        $textMessageBuilder = new TextMessageBuilder($message);
-                        // send reply message
-                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
-                  }
+                  // save user data
+                  $this->userGateway->saveUser(
+                        $profile['userId'],
+                        $profile['displayName']
+                  );
             }
       }
 }
