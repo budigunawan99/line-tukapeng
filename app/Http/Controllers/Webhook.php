@@ -150,7 +150,7 @@ class Webhook extends Controller
                   $res = $this->bot->getProfile($event['source']['userId']);
                   if ($res->isSucceeded()) {
                         $profile = $res->getJSONDecodedBody();
-
+                        $this->logger->debug('profil', $profile);
                         // create welcome message
                         $message  = "Hai, " . $profile['displayName'] . "!\n";
                         $message .= "Tambahkan aku menjadi temanmu untuk bisa menggunakan fitur chatbot!";
