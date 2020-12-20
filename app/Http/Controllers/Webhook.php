@@ -141,10 +141,10 @@ class Webhook extends Controller
                         $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
                         // save user data
-                        $this->userGateway->saveUser(
-                              $profile['userId'],
-                              $profile['displayName']
-                        );
+                        // $this->userGateway->saveUser(
+                        //       $profile['userId'],
+                        //       $profile['displayName']
+                        // );
                   }
             } elseif (isset($event['source']['groupId'])) {
                   $res = $this->bot->getProfile($event['source']['userId']);
