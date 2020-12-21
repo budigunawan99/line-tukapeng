@@ -243,7 +243,7 @@ class Webhook extends Controller
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
                   $this->logger->debug('api', $exchangerate);
-                  $message = "Hasil konversi dari " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $currentCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
+                  $message = "Hasil konversi dari " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
 
