@@ -162,7 +162,7 @@ class Webhook extends Controller
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
             } elseif ($this->user['number'] == 1) {
-                  if (in_array($userMessage, $this->listedCurrency())) {                     
+                  if (in_array($userMessage, $this->listedCurrency())) {
                         $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currency');
                         $this->userGateway->setUserProgress($this->user['user_id'], $this->user['number'] + 1);
                         $this->sendListCurrency($event['replyToken'], 'currencyTo_options.json');
@@ -235,15 +235,15 @@ class Webhook extends Controller
 
       private function showConversion($userMessage, $replyToken)
       {
-            if (is_numeric($userMessage) && is_int($userMessage)) {
+            if (is_numeric($userMessage)) {
                   $baseCurrency = $this->user['currency'];
                   $toCurrency = $this->user['currencyto'];
-                  $url = 'https://api.exchangeratesapi.io/latest?base='.$baseCurrency;
+                  $url = 'https://api.exchangeratesapi.io/latest?base=' . $baseCurrency;
                   $exchangerate = $this->callAPI($url);
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
                   $this->logger->debug('api', $exchangerate);
-                  $message = "Hasil konversi dari " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
+                  $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
 
