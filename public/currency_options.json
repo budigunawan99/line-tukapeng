@@ -1,0 +1,121 @@
+{
+    "type": "bubble",
+    "hero": {
+        "type": "image",
+        "url": "https://images-media.currency.com/6e89780f/1959/5495/93cc/37aa5e222ba9/on_page/shutterstock-367050494.jpg",
+        "size": "full",
+        "aspectRatio": "20:13",
+        "aspectMode": "cover",
+        "action": {
+            "type": "uri",
+            "uri": "http://linecorp.com/"
+        }
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "text",
+                "text": "Mata Uang",
+                "weight": "bold",
+                "size": "xl"
+            }
+        ]
+    },
+    "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "USD",
+                            "text": "USD"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "EUR",
+                            "text": "EUR"
+                        }
+                    },
+                    {
+                        "type": "spacer"
+                    }
+                ]
+            },
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "SGD",
+                            "text": "SGD"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "JPY",
+                            "text": "JPY"
+                        }
+                    },
+                    {
+                        "type": "spacer"
+                    }
+                ]
+            },
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "CNY",
+                            "text": "CNY"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                            "type": "message",
+                            "label": "HKD",
+                            "text": "HKD"
+                        }
+                    },
+                    {
+                        "type": "spacer"
+                    }
+                ]
+            }
+        ],
+        "flex": 0
+    }
+}

@@ -10,6 +10,7 @@ use Illuminate\Log\Logger;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
+use LINE\LINEBot\MessageBuilder\RawMessageBuilder;
 use LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
@@ -42,10 +43,6 @@ class Webhook extends Controller
        * @var UserGateway
        */
       private $userGateway;
-      /**
-       * @var array
-       */
-      private $user;
 
 
       public function __construct(
@@ -144,5 +141,48 @@ class Webhook extends Controller
                         $profile['displayName']
                   );
             }
+      }
+
+      private function textMessage($event)
+      {
+            $userMessage = $event['message']['text'];
+
+            if (strtolower($userMessage) == 'tukapeng') {
+                  $this->sendListCurrency($event['replyToken']);
+            } else {
+                  $message = 'Silakan kirim pesan "tukapeng" untuk memulai.';
+                  $textMessageBuilder = new TextMessageBuilder($message);
+                  $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+            }
+      }
+
+      private function stickerMessage($event)
+      {
+            // create sticker message
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
+
+            // create text message
+            $message = 'Silakan kirim pesan "tukapeng" untuk memulai.';
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
+
+            // send message
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+      }
+
+      private function sendListCurrency($replyToken)
+      {
+            $path = url('currency_options.json');
+            $flexTemplate = file_get_contents($path);
+            $message = new RawMessageBuilder([
+                  'type'     => 'flex',
+                  'altText'  => 'Currency Options',
+                  'contents' => json_decode($flexTemplate)
+            ]);
+            $this->bot->replyMessage($replyToken, $message);
       }
 }
