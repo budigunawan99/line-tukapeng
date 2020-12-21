@@ -125,7 +125,7 @@ class Webhook extends Controller
 
                   // create welcome message
                   $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
-                  $message .= "Kami akan membantumu menghitung kurs mata uang asing ke dalam rupiah.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
+                  $message .= "Kami akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
                   $textMessageBuilder = new TextMessageBuilder($message);
 
                   // create sticker message
