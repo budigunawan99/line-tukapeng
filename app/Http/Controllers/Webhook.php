@@ -153,7 +153,7 @@ class Webhook extends Controller
             if ($this->user['number'] == 0) {
                   if (strtolower($userMessage) == 'tukapeng') {
                         $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currency');
-                        $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currencyTo');
+                        $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currencyto');
                         $this->userGateway->setUserProgress($this->user['user_id'], 1);
                         $this->sendListCurrency($event['replyToken'], 'currency_options.json');
                   } else {
@@ -221,7 +221,7 @@ class Webhook extends Controller
 
             if (in_array($userMessage, $this->listedCurrency())) {
                   // update number progress
-                  $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currencyTo');
+                  $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currencyto');
                   $this->userGateway->setUserProgress($this->user['user_id'], $this->user['number'] + 1);
                   $message = 'Silahkan input jumlah uang yang ingin dikonversikan.';
                   $textMessageBuilder = new TextMessageBuilder($message);
@@ -237,7 +237,7 @@ class Webhook extends Controller
       {
             if (is_numeric($userMessage) && is_int($userMessage)) {
                   $baseCurrency = $this->user['currency'];
-                  $toCurrency = $this->user['currencyTo'];
+                  $toCurrency = $this->user['currencyto'];
                   $url = 'https://api.exchangeratesapi.io/latest?base='.$baseCurrency;
                   $exchangerate = $this->callAPI($url);
 
