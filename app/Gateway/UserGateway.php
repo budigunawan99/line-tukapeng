@@ -50,11 +50,11 @@ class UserGateway
                   ]);
       }
 
-      function setCurrency(string $userId, string $currency)
+      function setCurrency(string $userId, string $currency, string $column)
       {
             $this->db->table('users')
                   ->update([
-                        'currency' => $currency,
+                        $column => $currency,
                         'user_id' => $userId
                   ]);
       }

@@ -8,7 +8,7 @@
         "aspectMode": "cover",
         "action": {
             "type": "uri",
-            "uri": "http://linecorp.com/"
+            "uri": "https://www.xe.com/currencyconverter/"
         }
     },
     "body": {
@@ -17,7 +17,7 @@
         "contents": [
             {
                 "type": "text",
-                "text": "Mata Uang",
+                "text": "Pilih Mata Uang Asal",
                 "weight": "bold",
                 "size": "xl"
             }
@@ -96,8 +96,8 @@
                         "height": "sm",
                         "action": {
                             "type": "message",
-                            "label": "CNY",
-                            "text": "CNY"
+                            "label": "IDR",
+                            "text": "IDR"
                         }
                     },
                     {

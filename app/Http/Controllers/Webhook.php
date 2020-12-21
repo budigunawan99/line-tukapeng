@@ -152,17 +152,28 @@ class Webhook extends Controller
             $userMessage = $event['message']['text'];
             if ($this->user['number'] == 0) {
                   if (strtolower($userMessage) == 'tukapeng') {
-                        $this->userGateway->setCurrency($this->user['user_id'], 'IDR');
+                        $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currency');
+                        $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currencyTo');
                         $this->userGateway->setUserProgress($this->user['user_id'], 1);
-                        $this->sendListCurrency($event['replyToken']);
+                        $this->sendListCurrency($event['replyToken'], 'currency_options.json');
                   } else {
                         $message = 'Silakan kirim pesan "tukapeng" untuk memulai.';
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
             } elseif ($this->user['number'] == 1) {
-                  $this->inputMoney($userMessage, $event['replyToken']);
+                  if (in_array($userMessage, $this->listedCurrency())) {                     
+                        $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currency');
+                        $this->userGateway->setUserProgress($this->user['user_id'], $this->user['number'] + 1);
+                        $this->sendListCurrency($event['replyToken'], 'currencyTo_options.json');
+                  } else {
+                        $message = 'Mohon pilih mata uang yang tersedia!';
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+                  }
             } elseif ($this->user['number'] == 2) {
+                  $this->inputMoney($userMessage, $event['replyToken']);
+            } elseif ($this->user['number'] == 3) {
                   $this->showConversion($userMessage, $event['replyToken']);
             }
       }
@@ -185,9 +196,9 @@ class Webhook extends Controller
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
       }
 
-      private function sendListCurrency($replyToken)
+      private function sendListCurrency($replyToken, $viewpath)
       {
-            $path = url('currency_options.json');
+            $path = url($viewpath);
             $flexTemplate = file_get_contents($path);
             $message = new RawMessageBuilder([
                   'type'     => 'flex',
@@ -197,15 +208,20 @@ class Webhook extends Controller
             $this->bot->replyMessage($replyToken, $message);
       }
 
+      private function listedCurrency()
+      {
+            return array(
+                  "USD", "EUR", "SGD", "JPY", "IDR", "HKD"
+            );
+      }
+
       private function inputMoney($userMessage, $replyToken)
       {
-            $listedCurrency = array(
-                  "USD", "EUR", "SGD", "JPY", "CNY", "HKD"
-            );
 
-            if (in_array($userMessage, $listedCurrency)) {
+
+            if (in_array($userMessage, $this->listedCurrency())) {
                   // update number progress
-                  $this->userGateway->setCurrency($this->user['user_id'], $userMessage);
+                  $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currencyTo');
                   $this->userGateway->setUserProgress($this->user['user_id'], $this->user['number'] + 1);
                   $message = 'Silahkan input jumlah uang yang ingin dikonversikan.';
                   $textMessageBuilder = new TextMessageBuilder($message);
@@ -219,14 +235,15 @@ class Webhook extends Controller
 
       private function showConversion($userMessage, $replyToken)
       {
-            if (is_numeric($userMessage)) {
-                  $currentCurrency = $this->user['currency'];
-                  $url = 'https://api.exchangeratesapi.io/latest?base=IDR';
+            if (is_numeric($userMessage) && is_int($userMessage)) {
+                  $baseCurrency = $this->user['currency'];
+                  $toCurrency = $this->user['currencyTo'];
+                  $url = 'https://api.exchangeratesapi.io/latest?base='.$baseCurrency;
                   $exchangerate = $this->callAPI($url);
 
-                  $result = $this->conversion($exchangerate['rates'][$currentCurrency], $userMessage);
+                  $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
                   $this->logger->debug('api', $exchangerate);
-                  $message = "Hasil konversi dari " . $currentCurrency . " ke rupiah adalah\n" . $result . " ".$currentCurrency.".\nTerima Kasih telah menggunakan layanan kami!";
+                  $message = "Hasil konversi dari " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $currentCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
 
