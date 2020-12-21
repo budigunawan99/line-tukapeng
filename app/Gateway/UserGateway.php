@@ -40,4 +40,22 @@ class UserGateway
                         'display_name' => $displayName
                   ]);
       }
+
+      function setUserProgress(string $userId, int $stepNumber)
+      {
+            $this->db->table('users')
+                  ->update([
+                        'number' => $stepNumber,
+                        'user_id' => $userId
+                  ]);
+      }
+
+      function setCurrency(string $userId, int $currency)
+      {
+            $this->db->table('users')
+                  ->update([
+                        'currency' => $currency,
+                        'user_id' => $userId
+                  ]);
+      }
 }
