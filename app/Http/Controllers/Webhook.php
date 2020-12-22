@@ -129,7 +129,7 @@ class Webhook extends Controller
 
                   // create welcome message
                   $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
-                  $message .= "Kami akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
+                  $message .= "Kami akan membantumu menghitung kurs mata uang asing.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
@@ -159,7 +159,7 @@ class Webhook extends Controller
             $this->logger->debug('group', $res);
             // create welcome message
             $message  = "Terima Kasih telah mengundang saya ke grup " . $res['groupName'] . "!\n";
-            $message .= "Saya akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
+            $message .= "Saya akan membantumu menghitung kurs mata uang asing.";
             $textMessageBuilder = new TextMessageBuilder($message);
             $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
@@ -346,7 +346,7 @@ class Webhook extends Controller
       }
 
       private function help(){
-            $message = "Petunjuk Penggunaan:\n1. Kirim pesan \"tukapeng\" untuk memulai\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n4. Inputkan jumlah uang yang ingin dikonversikan\n5. Kami akan menghitung kurs mata uang nya untuk kamu";
+            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu";
             return $message;
       }
 }
