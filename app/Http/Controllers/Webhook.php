@@ -185,11 +185,11 @@ class Webhook extends Controller
                         $this->userGateway->setCurrency($this->user['user_id'], 'IDR', 'currencyto');
                         $this->userGateway->setUserProgress($this->user['user_id'], 1);
                         $this->sendListCurrency($event['replyToken'], 'currency_options.json');
-                  } elseif ((strtolower($userMessage) == 'tukapeng -help')) {
+                  } elseif ((strtolower($userMessage) == 'tukapeng-help')) {
                         $textMessageBuilder = new TextMessageBuilder($this->help());
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
-                        $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik\ntukapeng -help";
+                        $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
@@ -216,7 +216,7 @@ class Webhook extends Controller
             $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
             // create text message
-            $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik:\ntukapeng -help";
+            $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message
