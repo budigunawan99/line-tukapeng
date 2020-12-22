@@ -196,7 +196,7 @@ class Webhook extends Controller
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
-                        $message = 'Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.';
+                        $message = "Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
