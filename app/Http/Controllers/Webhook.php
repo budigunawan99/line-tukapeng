@@ -381,7 +381,7 @@ class Webhook extends Controller
 
       private function help()
       {
-            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi";
+            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi\n\n7. Petunjuk ini dapat anda temukan jika mengetik \"tukapeng-help\"";
             return $message;
       }
 }
