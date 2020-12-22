@@ -131,6 +131,7 @@ class Webhook extends Controller
                   $message  = "Selamat datang, " . $profile['displayName'] . "!\n";
                   $message .= "Kami akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
                   $textMessageBuilder = new TextMessageBuilder($message);
+                  $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
                   // create sticker message
                   $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
@@ -138,6 +139,7 @@ class Webhook extends Controller
                   // merge all message
                   $multiMessageBuilder = new MultiMessageBuilder();
                   $multiMessageBuilder->add($textMessageBuilder);
+                  $multiMessageBuilder->add($textMessageBuilder1);
                   $multiMessageBuilder->add($stickerMessageBuilder);
 
                   // send reply message
@@ -159,6 +161,7 @@ class Webhook extends Controller
             $message  = "Terima Kasih telah mengundang saya ke grup " . $res['groupName'] . "!\n";
             $message .= "Saya akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
             $textMessageBuilder = new TextMessageBuilder($message);
+            $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
             // create sticker message
             $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
@@ -166,6 +169,7 @@ class Webhook extends Controller
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($textMessageBuilder1);
             $multiMessageBuilder->add($stickerMessageBuilder);
 
             // send reply message
@@ -268,7 +272,7 @@ class Webhook extends Controller
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
                   $this->logger->debug('api', $exchangerate);
-                  $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!";
+                  $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!\n\n" . $exchangerate['date'];
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
 
@@ -318,7 +322,7 @@ class Webhook extends Controller
       {
             $curl = curl_init();
 
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer {'.getenv('CHANNEL_ACCESS_TOKEN').'}'));
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer {' . getenv('CHANNEL_ACCESS_TOKEN') . '}'));
             curl_setopt_array($curl, array(
                   CURLOPT_URL => $url,
                   CURLOPT_RETURNTRANSFER => true,
@@ -339,5 +343,10 @@ class Webhook extends Controller
             curl_close($curl);
 
             return json_decode($response, true);
+      }
+
+      private function help(){
+            $message = "Petunjuk Penggunaan:\n1. Kirim pesan \"tukapeng\" untuk memulai\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n4. Inputkan jumlah uang yang ingin dikonversikan\n5. Kami akan menghitung kurs mata uang nya untuk kamu";
+            return $message;
       }
 }
