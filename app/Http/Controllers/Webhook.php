@@ -88,8 +88,6 @@ class Webhook extends Controller
 
             if (is_array($data['events'])) {
                   foreach ($data['events'] as $event) {
-                        // skip group and room event
-                        if (!isset($event['source']['userId'])) continue;
 
                         if (isset($event['source']['userId'])) {
                               // get user data from database
