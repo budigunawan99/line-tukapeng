@@ -192,7 +192,7 @@ class Webhook extends Controller
                         $this->sendListCurrency($event['replyToken'], 'currencyTo_options.json');
                   } elseif (strtolower($userMessage) == 'tukapeng-out') {
                         $this->userGateway->setUserProgress($this->user['user_id'], 0);
-                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $message = "Konversi dibatalkan.\n\nSilakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
@@ -203,7 +203,7 @@ class Webhook extends Controller
             } elseif ($this->user['number'] == 2) {
                   if (strtolower($userMessage) == 'tukapeng-out') {
                         $this->userGateway->setUserProgress($this->user['user_id'], 0);
-                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $message = "Konversi dibatalkan.\n\nSilakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
@@ -212,7 +212,7 @@ class Webhook extends Controller
             } elseif ($this->user['number'] == 3) {
                   if (strtolower($userMessage) == 'tukapeng-out') {
                         $this->userGateway->setUserProgress($this->user['user_id'], 0);
-                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $message = "Konversi dibatalkan.\n\nSilakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
