@@ -318,6 +318,7 @@ class Webhook extends Controller
       {
             $curl = curl_init();
 
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer {'.getenv('CHANNEL_ACCESS_TOKEN').'}'));
             curl_setopt_array($curl, array(
                   CURLOPT_URL => $url,
                   CURLOPT_RETURNTRANSFER => true,
@@ -326,9 +327,10 @@ class Webhook extends Controller
                   CURLOPT_TIMEOUT => 0,
                   CURLOPT_FOLLOWLOCATION => true,
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_HEADER => 'Authorization: Bearer '.getenv('CHANNEL_ACCESS_TOKEN'),
                   CURLOPT_CUSTOMREQUEST => 'GET',
             ));
+
+
 
             $response = curl_exec($curl);
             if (!$response) {
