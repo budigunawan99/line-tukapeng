@@ -219,6 +219,24 @@ class Webhook extends Controller
 
                   // send message
                   $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            } elseif ($this->user['number'] == 1) {
+                  // create text message
+                  $message = "Mohon pilih mata uang yang tersedia!";
+                  $textMessageBuilder = new TextMessageBuilder($message);
+                  // send message
+                  $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+            } elseif ($this->user['number'] == 2) {
+                  // create text message
+                  $message = "Mohon pilih mata uang yang tersedia!";
+                  $textMessageBuilder = new TextMessageBuilder($message);
+                  // send message
+                  $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+            } elseif ($this->user['number'] == 3) {
+                  // create text message
+                  $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!";
+                  $textMessageBuilder = new TextMessageBuilder($message);
+                  // send message
+                  $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
             }
       }
 
