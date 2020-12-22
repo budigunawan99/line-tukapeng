@@ -89,24 +89,32 @@ class Webhook extends Controller
             if (is_array($data['events'])) {
                   foreach ($data['events'] as $event) {
                         // skip group and room event
-                        // if (!isset($event['source']['userId'])) continue;
+                        if (!isset($event['source']['userId'])) continue;
 
-                        // get user data from database
-                        $this->user = $this->userGateway->getUser($event['source']['userId']);
+                        if (isset($event['source']['userId'])) {
+                              // get user data from database
+                              $this->user = $this->userGateway->getUser($event['source']['userId']);
 
-                        // if user not registered
-                        if (!$this->user) $this->followCallback($event);
-                        else {
-                              // respond event
-                              if ($event['type'] == 'message') {
-                                    if (method_exists($this, $event['message']['type'] . 'Message')) {
-                                          $this->{$event['message']['type'] . 'Message'}($event);
-                                    }
-                              } else {
-                                    if (method_exists($this, $event['type'] . 'Callback')) {
-                                          $this->{$event['type'] . 'Callback'}($event);
+                              // if user not registered
+                              if (!$this->user) $this->followCallback($event);
+                              else {
+                                    // respond event
+                                    if ($event['type'] == 'message') {
+                                          if (method_exists($this, $event['message']['type'] . 'Message')) {
+                                                $this->{$event['message']['type'] . 'Message'}($event);
+                                          }
+                                    } else {
+                                          if (method_exists($this, $event['type'] . 'Callback')) {
+                                                $this->{$event['type'] . 'Callback'}($event);
+                                          }
                                     }
                               }
+                        } elseif (isset($event['source']['groupId']) && $event['type'] === 'join') {
+                              if (method_exists($this, $event['type'] . 'Callback')) {
+                                    $this->{$event['type'] . 'Callback'}($event);
+                              }
+                        } else {
+                              continue;
                         }
                   }
             }
