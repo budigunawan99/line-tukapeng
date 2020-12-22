@@ -150,7 +150,7 @@ class Webhook extends Controller
       private function joinCallback($event)
       {
             $res = $this->callAPI('https://api.line.me/v2/bot/group/' . $event['source']['groupId'] . '/summary');
-
+            $this->logger->debug('group', $res);
             // create welcome message
             $message  = "Terima Kasih telah mengundang saya ke grup " . $res['groupName'] . "!\n";
             $message .= "Saya akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
