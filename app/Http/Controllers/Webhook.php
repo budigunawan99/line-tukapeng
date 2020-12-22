@@ -109,10 +109,8 @@ class Webhook extends Controller
                                           }
                                     }
                               }
-                        } elseif (isset($event['source']['groupId']) && $event['type'] === 'join') {
-                              if (method_exists($this, $event['type'] . 'Callback')) {
-                                    $this->{$event['type'] . 'Callback'}($event);
-                              }
+                        } elseif (isset($event['source']['groupId']) && $event['type'] == 'join') {
+                              $this->joinCallback($event);
                         } else {
                               continue;
                         }
