@@ -190,15 +190,34 @@ class Webhook extends Controller
                         $this->userGateway->setCurrency($this->user['user_id'], $userMessage, 'currency');
                         $this->userGateway->setUserProgress($this->user['user_id'], $this->user['number'] + 1);
                         $this->sendListCurrency($event['replyToken'], 'currencyTo_options.json');
+                  } elseif (strtolower($userMessage) == 'tukapeng-out') {
+                        $this->userGateway->setUserProgress($this->user['user_id'], 0);
+                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
-                        $message = 'Mohon pilih mata uang yang tersedia!';
+                        $message = 'Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.';
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
             } elseif ($this->user['number'] == 2) {
-                  $this->inputMoney($userMessage, $event['replyToken']);
+                  if (strtolower($userMessage) == 'tukapeng-out') {
+                        $this->userGateway->setUserProgress($this->user['user_id'], 0);
+                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+                  } else {
+                        $this->inputMoney($userMessage, $event['replyToken']);
+                  }
             } elseif ($this->user['number'] == 3) {
-                  $this->showConversion($userMessage, $event['replyToken']);
+                  if (strtolower($userMessage) == 'tukapeng-out') {
+                        $this->userGateway->setUserProgress($this->user['user_id'], 0);
+                        $message = "Konversi dibatalkan.\n\n Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
+                  } else {
+                        $this->showConversion($userMessage, $event['replyToken']);
+                  }
             }
       }
 
@@ -221,19 +240,19 @@ class Webhook extends Controller
                   $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
             } elseif ($this->user['number'] == 1) {
                   // create text message
-                  $message = "Mohon pilih mata uang yang tersedia!";
+                  $message = "Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   // send message
                   $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
             } elseif ($this->user['number'] == 2) {
                   // create text message
-                  $message = "Mohon pilih mata uang yang tersedia!";
+                  $message = "Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   // send message
                   $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
             } elseif ($this->user['number'] == 3) {
                   // create text message
-                  $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!";
+                  $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   // send message
                   $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
@@ -271,7 +290,7 @@ class Webhook extends Controller
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $this->bot->replyMessage($replyToken, $textMessageBuilder);
             } else {
-                  $message = 'Mohon pilih mata uang yang tersedia!';
+                  $message = "Mohon pilih mata uang yang tersedia!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $this->bot->replyMessage($replyToken, $textMessageBuilder);
             }
@@ -298,7 +317,7 @@ class Webhook extends Controller
                   $this->bot->replyMessage($replyToken, $multiMessageBuilder);
                   $this->userGateway->setUserProgress($this->user['user_id'], 0);
             } else {
-                  $message = 'Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!';
+                  $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $this->bot->replyMessage($replyToken, $textMessageBuilder);
             }
@@ -362,7 +381,7 @@ class Webhook extends Controller
 
       private function help()
       {
-            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu";
+            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi";
             return $message;
       }
 }
