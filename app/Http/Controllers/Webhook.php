@@ -15,7 +15,7 @@ use LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
-use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 
 class Webhook extends Controller
 {
@@ -305,16 +305,23 @@ class Webhook extends Controller
                   $exchangerate = $this->callAPI($url);
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
-                  $this->logger->debug('api', $exchangerate);
-                  $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!\n\n" . $exchangerate['date'];
-                  $textMessageBuilder = new TextMessageBuilder($message);
-                  $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
+                  $image = 'https://images.unsplash.com/photo-1591033594798-33227a05780d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=654&q=80';
+                  $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
 
-                  $multiMessageBuilder = new MultiMessageBuilder();
-                  $multiMessageBuilder->add($textMessageBuilder);
-                  $multiMessageBuilder->add($stickerMessageBuilder);
+                  $buttonTemplate = new ButtonTemplateBuilder($baseCurrency. " > ".$toCurrency." (".$exchangerate['rates'][$toCurrency].")", $toCurrency." ".number_format($result, 2)."\n\nLast updated: ".$exchangerate['date'], $image, $options);
 
-                  $this->bot->replyMessage($replyToken, $multiMessageBuilder);
+                  // build message
+                  $messageBuilder = new TemplateMessageBuilder("Hasil Konversi Mata Uang", $buttonTemplate);
+
+                  // $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!\n\n" . $exchangerate['date'];
+                  // $textMessageBuilder = new TextMessageBuilder($message);
+                  // $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
+
+                  // $multiMessageBuilder = new MultiMessageBuilder();
+                  // $multiMessageBuilder->add($textMessageBuilder);
+                  // $multiMessageBuilder->add($stickerMessageBuilder);
+
+                  $this->bot->replyMessage($replyToken, $messageBuilder);
                   $this->userGateway->setUserProgress($this->user['user_id'], 0);
             } else {
                   $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
@@ -381,7 +388,7 @@ class Webhook extends Controller
 
       private function help()
       {
-            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi\n\n7. Petunjuk ini dapat anda temukan jika mengetik \"tukapeng-help\"";
+            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi\n\n7. Anda dapat mengetik \"tukapeng-help\" untuk membuka petunjuk ini lagi (Tidak berlaku ketika proses penginputan data)";
             return $message;
       }
 }
