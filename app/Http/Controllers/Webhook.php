@@ -189,7 +189,7 @@ class Webhook extends Controller
                         $textMessageBuilder = new TextMessageBuilder($this->help());
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   } else {
-                        $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan bantuan kirim pesan \n\"tukapeng -help\"";
+                        $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik\ntukapeng -help";
                         $textMessageBuilder = new TextMessageBuilder($message);
                         $this->bot->replyMessage($event['replyToken'], $textMessageBuilder);
                   }
@@ -216,7 +216,7 @@ class Webhook extends Controller
             $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
             // create text message
-            $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan bantuan kirim pesan \n\"tukapeng -help\"";
+            $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik:\ntukapeng -help";
             $textMessageBuilder = new TextMessageBuilder($message);
 
             // merge all message
