@@ -147,6 +147,27 @@ class Webhook extends Controller
             }
       }
 
+      private function joinCallback($event)
+      {
+            $res = $this->callAPI('https://api.line.me/v2/bot/group/' . $event['source']['groupId'] . '/summary');
+
+            // create welcome message
+            $message  = "Terima Kasih telah mengundang saya ke grup " . $res['groupName'] . "!\n";
+            $message .= "Saya akan membantumu menghitung kurs mata uang asing.\nSilahkan kirim pesan \"tukapeng\" untuk memulai.";
+            $textMessageBuilder = new TextMessageBuilder($message);
+
+            // create sticker message
+            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
+
+            // merge all message
+            $multiMessageBuilder = new MultiMessageBuilder();
+            $multiMessageBuilder->add($textMessageBuilder);
+            $multiMessageBuilder->add($stickerMessageBuilder);
+
+            // send reply message
+            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+      }
+
       private function textMessage($event)
       {
             $userMessage = $event['message']['text'];
