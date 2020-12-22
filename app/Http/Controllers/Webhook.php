@@ -204,20 +204,22 @@ class Webhook extends Controller
 
       private function stickerMessage($event)
       {
-            // create sticker message
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
+            if ($this->user['number'] == 0) {
+                  // create sticker message
+                  $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
 
-            // create text message
-            $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
-            $textMessageBuilder = new TextMessageBuilder($message);
+                  // create text message
+                  $message = "Silakan kirim pesan \"tukapeng\" untuk memulai.\n\nApabila Anda membutuhkan petunjuk ketik \"tukapeng-help\"";
+                  $textMessageBuilder = new TextMessageBuilder($message);
 
-            // merge all message
-            $multiMessageBuilder = new MultiMessageBuilder();
-            $multiMessageBuilder->add($textMessageBuilder);
-            $multiMessageBuilder->add($stickerMessageBuilder);
+                  // merge all message
+                  $multiMessageBuilder = new MultiMessageBuilder();
+                  $multiMessageBuilder->add($textMessageBuilder);
+                  $multiMessageBuilder->add($stickerMessageBuilder);
 
-            // send message
-            $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                  // send message
+                  $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+            }
       }
 
       private function sendListCurrency($replyToken, $viewpath)
