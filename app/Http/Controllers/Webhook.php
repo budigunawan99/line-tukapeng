@@ -153,7 +153,7 @@ class Webhook extends Controller
 
       private function joinCallback($event)
       {
-            $res = $this->callAPI('https://api.line.me/v2/bot/group/' . $event['source']['groupId'] . '/summary');
+            $res = $this->callGroupAPI('https://api.line.me/v2/bot/group/' . $event['source']['groupId'] . '/summary');
             $this->logger->debug('group', $res);
             // create welcome message
             $message  = "Terima Kasih telah mengundang saya ke grup " . $res['groupName'] . "!\n";
@@ -302,6 +302,31 @@ class Webhook extends Controller
                   CURLOPT_TIMEOUT => 0,
                   CURLOPT_FOLLOWLOCATION => true,
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => 'GET',
+            ));
+
+            $response = curl_exec($curl);
+            if (!$response) {
+                  die("Connection Failure");
+            }
+            curl_close($curl);
+
+            return json_decode($response, true);
+      }
+
+      private function callGroupAPI($url)
+      {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                  CURLOPT_URL => $url,
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => '',
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 0,
+                  CURLOPT_FOLLOWLOCATION => true,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_HEADER => 'Authorization: Bearer '.getenv('CHANNEL_ACCESS_TOKEN'),
                   CURLOPT_CUSTOMREQUEST => 'GET',
             ));
 
