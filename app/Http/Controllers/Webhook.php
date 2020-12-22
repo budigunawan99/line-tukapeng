@@ -305,7 +305,7 @@ class Webhook extends Controller
                   $exchangerate = $this->callAPI($url);
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
-                  $image = 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=667&q=80';
+                  $image = 'https://images-media.currency.com/6e89780f/1959/5495/93cc/37aa5e222ba9/on_page/shutterstock-367050494.jpg';
                   $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
 
                   $buttonTemplate = new ButtonTemplateBuilder($toCurrency." ".number_format($result, 2), "Exc Rate ".$baseCurrency. " > ".$toCurrency." = ".$exchangerate['rates'][$toCurrency]."\n\nLast updated: ".$exchangerate['date'], $image, $options);
