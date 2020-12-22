@@ -304,23 +304,35 @@ class Webhook extends Controller
                   $url = 'https://api.exchangeratesapi.io/latest?base=' . $baseCurrency;
                   $exchangerate = $this->callAPI($url);
 
-                  $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
-                  $image = 'https://images-media.currency.com/6e89780f/1959/5495/93cc/37aa5e222ba9/on_page/shutterstock-367050494.jpg';
-                  $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
+                  if ($exchangerate != "error") {
+                        $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
+                        $image = 'https://images-media.currency.com/6e89780f/1959/5495/93cc/37aa5e222ba9/on_page/shutterstock-367050494.jpg';
+                        $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
 
-                  $buttonTemplate = new ButtonTemplateBuilder($baseCurrency." ".$userMessage." = ".$toCurrency." ".number_format($result, 2), "Exc Rate ".$baseCurrency. " > ".$toCurrency." = ".$exchangerate['rates'][$toCurrency]."\n\nLast updated: ".$exchangerate['date'], $image, $options);
+                        $buttonTemplate = new ButtonTemplateBuilder($baseCurrency . " " . $userMessage . " = " . $toCurrency . " " . number_format($result, 2), "Exc Rate " . $baseCurrency . " > " . $toCurrency . " = " . $exchangerate['rates'][$toCurrency] . "\n\nLast updated: " . $exchangerate['date'], $image, $options);
 
-                  // build message
-                  $messageBuilder = new TemplateMessageBuilder("Hasil Konversi Mata Uang", $buttonTemplate);
+                        // build message
+                        $messageBuilder = new TemplateMessageBuilder("Hasil Konversi Mata Uang", $buttonTemplate);
 
-                  $message = "Terima kasih sudah menggunakan jasa konversi Tukapeng. Ketik \"tukapeng\" untuk mencoba lagi.";
-                  $textMessageBuilder = new TextMessageBuilder($message);            
+                        $message = "Terima kasih sudah menggunakan jasa konversi Tukapeng. Ketik \"tukapeng\" untuk mencoba lagi.";
+                        $textMessageBuilder = new TextMessageBuilder($message);
 
-                  $multiMessageBuilder = new MultiMessageBuilder();
-                  $multiMessageBuilder->add($messageBuilder);   
-                  $multiMessageBuilder->add($textMessageBuilder);             
+                        $multiMessageBuilder = new MultiMessageBuilder();
+                        $multiMessageBuilder->add($messageBuilder);
+                        $multiMessageBuilder->add($textMessageBuilder);
 
-                  $this->bot->replyMessage($replyToken, $multiMessageBuilder);
+                        $this->bot->replyMessage($replyToken, $multiMessageBuilder);
+                  } else {
+                        $message = "Koneksi API sedang bermasalah. Silahkan ketik \"tukapeng\" untuk mencoba lagi.";
+                        $textMessageBuilder = new TextMessageBuilder($message);
+                        $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002750);
+
+                        $multiMessageBuilder = new MultiMessageBuilder();
+                        $multiMessageBuilder->add($textMessageBuilder);
+                        $multiMessageBuilder->add($stickerMessageBuilder);
+
+                        $this->bot->replyMessage($replyToken, $multiMessageBuilder);
+                  }
                   $this->userGateway->setUserProgress($this->user['user_id'], 0);
             } else {
                   $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
@@ -351,7 +363,7 @@ class Webhook extends Controller
 
             $response = curl_exec($curl);
             if (!$response) {
-                  die("Connection Failure");
+                  return "error";
             }
             curl_close($curl);
 
