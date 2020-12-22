@@ -133,14 +133,10 @@ class Webhook extends Controller
                   $textMessageBuilder = new TextMessageBuilder($message);
                   $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
-                  // create sticker message
-                  $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
-
                   // merge all message
                   $multiMessageBuilder = new MultiMessageBuilder();
                   $multiMessageBuilder->add($textMessageBuilder);
                   $multiMessageBuilder->add($textMessageBuilder1);
-                  $multiMessageBuilder->add($stickerMessageBuilder);
 
                   // send reply message
                   $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
@@ -163,14 +159,10 @@ class Webhook extends Controller
             $textMessageBuilder = new TextMessageBuilder($message);
             $textMessageBuilder1 = new TextMessageBuilder($this->help());
 
-            // create sticker message
-            $stickerMessageBuilder = new StickerMessageBuilder(11537, 52002759);
-
             // merge all message
             $multiMessageBuilder = new MultiMessageBuilder();
             $multiMessageBuilder->add($textMessageBuilder);
             $multiMessageBuilder->add($textMessageBuilder1);
-            $multiMessageBuilder->add($stickerMessageBuilder);
 
             // send reply message
             $this->bot->replyMessage($event['replyToken'], $multiMessageBuilder);
