@@ -305,23 +305,22 @@ class Webhook extends Controller
                   $exchangerate = $this->callAPI($url);
 
                   $result = $this->conversion($exchangerate['rates'][$toCurrency], $userMessage);
-                  $image = 'https://images.unsplash.com/photo-1591033594798-33227a05780d?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=654&q=80';
+                  $image = 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=667&q=80';
                   $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
 
-                  $buttonTemplate = new ButtonTemplateBuilder($baseCurrency. " > ".$toCurrency." (".$exchangerate['rates'][$toCurrency].")", $toCurrency." ".number_format($result, 2)."\n\nLast updated: ".$exchangerate['date'], $image, $options);
+                  $buttonTemplate = new ButtonTemplateBuilder($toCurrency." ".number_format($result, 2), "Exc Rate ".$baseCurrency. " > ".$toCurrency." = ".$exchangerate['rates'][$toCurrency]."\n\nLast updated: ".$exchangerate['date'], $image, $options);
 
                   // build message
                   $messageBuilder = new TemplateMessageBuilder("Hasil Konversi Mata Uang", $buttonTemplate);
 
-                  // $message = "Hasil konversi dari " . number_format($userMessage, 2) . " " . $baseCurrency . " ke " . $toCurrency . " adalah " . number_format($result, 2) . " " . $toCurrency . ".\n\nTerima Kasih telah menggunakan layanan kami!\n\n" . $exchangerate['date'];
-                  // $textMessageBuilder = new TextMessageBuilder($message);
-                  // $stickerMessageBuilder = new StickerMessageBuilder(11538, 51626502);
+                  $message = "Terima kasih sudah menggunakan jasa konversi Tukapeng. Ketik \"tukapeng\" untuk mencoba lagi.";
+                  $textMessageBuilder = new TextMessageBuilder($message);            
 
-                  // $multiMessageBuilder = new MultiMessageBuilder();
-                  // $multiMessageBuilder->add($textMessageBuilder);
-                  // $multiMessageBuilder->add($stickerMessageBuilder);
+                  $multiMessageBuilder = new MultiMessageBuilder();
+                  $multiMessageBuilder->add($messageBuilder);   
+                  $multiMessageBuilder->add($textMessageBuilder);             
 
-                  $this->bot->replyMessage($replyToken, $messageBuilder);
+                  $this->bot->replyMessage($replyToken, $multiMessageBuilder);
                   $this->userGateway->setUserProgress($this->user['user_id'], 0);
             } else {
                   $message = "Mohon masukkan jumlah uang yang ingin dikonversikan dengan benar!\n\nKetik \"tukapeng-out\" apabila ingin membatalkan konversi.";
