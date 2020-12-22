@@ -308,7 +308,7 @@ class Webhook extends Controller
                   $image = 'https://images-media.currency.com/6e89780f/1959/5495/93cc/37aa5e222ba9/on_page/shutterstock-367050494.jpg';
                   $options[] = new UriTemplateActionBuilder('exchangeratesapi.io', 'https://exchangeratesapi.io/');
 
-                  $buttonTemplate = new ButtonTemplateBuilder($toCurrency." ".number_format($result, 2), "Exc Rate ".$baseCurrency. " > ".$toCurrency." = ".$exchangerate['rates'][$toCurrency]."\n\nLast updated: ".$exchangerate['date'], $image, $options);
+                  $buttonTemplate = new ButtonTemplateBuilder($baseCurrency." ".$userMessage." = ".$toCurrency." ".number_format($result, 2), "Exc Rate ".$baseCurrency. " > ".$toCurrency." = ".$exchangerate['rates'][$toCurrency]."\n\nLast updated: ".$exchangerate['date'], $image, $options);
 
                   // build message
                   $messageBuilder = new TemplateMessageBuilder("Hasil Konversi Mata Uang", $buttonTemplate);
@@ -387,7 +387,7 @@ class Webhook extends Controller
 
       private function help()
       {
-            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Anda dapat mengetik \"tukapeng-out\" untuk membatalkan konversi\n\n7. Anda dapat mengetik \"tukapeng-help\" untuk membuka petunjuk ini lagi (Tidak berlaku ketika proses penginputan data)";
+            $message = "Petunjuk Penggunaan:\n\n1. Kirim pesan \"tukapeng\" untuk memulai\n\n2. Pilih mata uang asal yang tersedia untuk dikonversikan\n\n3. Pilih mata uang tujuan yang tersedia untuk menjadi target konversi\n\n4. Inputkan jumlah uang yang ingin dikonversikan\n\n5. Kami akan menghitung kurs mata uang nya untuk kamu\n\n6. Ketik \"tukapeng-out\" untuk membatalkan konversi\n\n7. Ketik \"tukapeng-help\" untuk membuka petunjuk ini lagi. Tidak berlaku ketika proses penginputan data";
             return $message;
       }
 }
